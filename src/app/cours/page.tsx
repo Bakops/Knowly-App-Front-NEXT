@@ -27,22 +27,20 @@ const CoursesPage = () => {
     fetchCourses();
   }, []);
 
-  return (
-    <>
+// KNOWLY%20NEXTJS\knowlyapp\src\app\cours\page.tsx
+return (
+  <>
     <HeaderComponent />
-    <div style={{ minHeight: '100vh', padding: '20px', color: '#c3cc50' }}>
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+    <div style={{ minHeight: '20vh', padding: '20px', color: '#c3cc50', display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', width: '59%' }}>
         {courses.map(course => (
-          <CourseCard key={course.id} name={course.name} price={course.price} />
+          <CourseCard key={course.id} id={course.id} name={course.name} price={course.price} />
         ))}
       </div>
     </div>
-    </>
-    
+  </>
+);
 
-
-    
-  );
 };
 
 export default CoursesPage;
