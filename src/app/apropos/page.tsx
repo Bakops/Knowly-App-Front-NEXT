@@ -15,7 +15,7 @@ const AboutPage: React.FC = () => {
           Whether you're looking to develop new skills, advance your career, or simply explore new interests, Knowly offers a wide range of courses tailored to your needs. Our platform connects you with expert instructors and a community of learners from around the globe.
         </p>
         <p className="mb-5 text-lg">
-          Join us on this journey of knowledge and discovery. With Knowly, learning has no limits.
+          Reoint us on this journey of knowledge and discovery. With Knowly, learning has no limits.
         </p>
       </section>
       <footer className="mt-10 border-t border-gray-300 pt-2 text-center">
