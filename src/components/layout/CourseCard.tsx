@@ -14,6 +14,6 @@ const CourseCard = ({ id, name, price }: CourseCardProps) => (
   </div>
   </div>
   
-);
+); 
 
 export default CourseCard;

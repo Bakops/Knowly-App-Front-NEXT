@@ -15,7 +15,7 @@ const CoursesPage = () => {
   const [courses, setCourses] = useState<Course[]>([]);
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchCourses = async () => { 
       try {
         const response = await axios.get('http://localhost:8081/courses');
         setCourses(response.data);
