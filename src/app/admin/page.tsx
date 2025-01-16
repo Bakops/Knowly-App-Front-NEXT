@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import { useState } from 'react';
+import Link from "next/link";
 
 
 const CoursesAdmin = () => {
@@ -26,6 +27,7 @@ const CoursesAdmin = () => {
         price: parseFloat(coursePrice),
       });
       console.log('Course created:', response.data);
+      alert("Course created !")
     } catch (error) {
       console.error('Error creating course:', error);
     }
@@ -38,6 +40,7 @@ const CoursesAdmin = () => {
         price: parseFloat(coursePrice),
       });
       console.log('Course updated:', response.data);
+      alert("Course updated !")
     } catch (error) {
       console.error('Error creating course:', error);
     }
@@ -47,6 +50,7 @@ const CoursesAdmin = () => {
     try {
       const response = await axios.delete(`http://localhost:8081/courses/${courseId}`);
       console.log('Course deleted:', response.data);
+      alert("Course deleted !")
     } catch (error) {
       console.error('Error creating course:', error);
     }
@@ -61,6 +65,7 @@ const CoursesAdmin = () => {
         content: lessonContent,
       });
       console.log('Lesson created:', response.data);
+      alert("Lessons created !")
     } catch (error) {
       console.error('Error creating course:', error);
     }
@@ -73,6 +78,7 @@ const CoursesAdmin = () => {
         content: lessonContent,
       });
       console.log('Lesson updated:', response.data);
+      alert("Lessons update !")
     } catch (error) {
       console.error('Error creating course:', error);
     }
@@ -82,18 +88,23 @@ const CoursesAdmin = () => {
     try {
       const response = await axios.delete(`http://localhost:8081/lessons/${lessonId}`);
       console.log('Lesson deleted:', response.data);
+      alert("Lessons deleted !")
     } catch (error) {
       console.error('Error creating course:', error);
     }
   };
 
   return (
-    <div style={{ backgroundColor: '#1f2937', minHeight: '100vh', padding: '20px' }}>
-      <h1 style={{ color: '#c3cc50', marginBottom: '20px', fontWeight: '700' }}>Admin - Courses and Lessons</h1>
+    <div style={{ backgroundColor: '#1f2937', minHeight: '100vh', padding: '50px' }}>
+      <div className='flex justify-end'>
+        <Link href="/"><button style={buttonStyleDELETE}>Return Home</button></Link>
+      </div>
+      
+      <h1 style={{ color: '#c3cc50', marginBottom: '20px', fontWeight: '700', fontSize: '25px' }}>KnowlyAdmin - Cours & Leçons</h1>
 
       {/* Courses Section */}
       <div style={{ marginBottom: '40px' }}>
-        <h2 style={{ color: '#c3cc50' }}>Courses</h2>
+        <h2 style={{ color: '#c3cc50' }}>Cours</h2>
         <input
           type="text"
           value={courseId}
@@ -122,7 +133,7 @@ const CoursesAdmin = () => {
 
       {/* Lessons Section */}
       <div>
-        <h2 style={{ color: '#c3cc50' }}>Lessons</h2>
+        <h2 style={{ color: '#c3cc50' }}>Leçons</h2>
         <input
           type="text"
           value={lessonId}
