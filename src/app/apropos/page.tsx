@@ -9,13 +9,13 @@ const AboutPage: React.FC = () => {
       
       <section className="flex-grow max-w-2xl mx-auto">
         <p className="mb-5 text-lg">
-          Knowly is your go-to platform for allons courses, designed to empower learners and educators alike. Our mission is to make quality education accessible to everyone, everywhere.
+          Knowly est votre plateforme de référence pour les cours d'allons, conçue pour donner aux apprenants et aux éducateurs les moyens d'agir. Notre mission est de rendre l'éducation de qualité accessible à tous, partout.
         </p>
         <p className="mb-5 text-lg">
-          Whether you're looking to develop new skills, advance your career, or simply explore new interests, Knowly offers a wide range of courses tailored to your needs. Our platform connects you with expert instructors and a community of learners from around the globe.
+          Que vous cherchiez à développer de nouvelles compétences, à faire progresser votre carrière ou simplement à explorer de nouveaux centres d'intérêt, Knowly propose un large éventail de cours adaptés à vos besoins. Notre plateforme vous met en relation avec des formateurs experts et une communauté d'apprenants du monde entier.
         </p>
         <p className="mb-5 text-lg">
-          Reoint us on this journey of knowledge and discovery. With Knowly, learning has no limits.
+          Rejoignez-nous dans ce voyage de la connaissance et de la découverte. Avec Knowly, l'apprentissage n'a pas de limites.
         </p>
       </section>
       <footer className="mt-10 border-t border-gray-300 pt-2 text-center">
