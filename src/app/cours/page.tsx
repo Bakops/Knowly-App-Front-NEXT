@@ -27,7 +27,7 @@ const CoursesPage = () => {
     fetchCourses();
   }, []);
 
-// KNOWLY%20NEXTJS\knowlyapp\src\app\cours\page.tsx
+
 return (
   <>
     <HeaderComponent />
