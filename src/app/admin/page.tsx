@@ -19,7 +19,7 @@ const CoursesAdmin = () => {
   // Course handlers
 const createCourse = async () => {
   try {
-    const response = await axios.post('https://knowly-back.onrender.com/courses/', {
+    const response = await axios.post('https://knowly-back.onrender.com/courses', {
       name: courseName,
       price: parseFloat(coursePrice),
     });
@@ -55,6 +55,7 @@ const createCourse = async () => {
     alert("Course deleted !");
   } catch (error) {
     console.error('Error deleting course:', error);
+
   }
 };
 
