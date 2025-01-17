@@ -19,7 +19,7 @@ const CoursesAdmin = () => {
   // Course handlers
   const createCourse = async () => {
     try {
-      const response = await axios.post('https://knowly-back.onrender.com/courses', {
+      const response = await axios.post('https://knowly-back.onrender.com/courses/', {
         id: Math.floor(Math.random() * 1000),
         name: courseName,
         price: parseFloat(coursePrice),
