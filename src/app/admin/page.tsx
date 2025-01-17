@@ -19,7 +19,7 @@ const CoursesAdmin = () => {
   // Course handlers
   const createCourse = async () => {
     try {
-      const response = await axios.post('http://localhost:8081/courses', {
+      const response = await axios.post('https://knowly-back.onrender.com/courses', {
         id: Math.floor(Math.random() * 1000),
         name: courseName,
         price: parseFloat(coursePrice),
@@ -33,7 +33,7 @@ const CoursesAdmin = () => {
 
   const updateCourse = async () => {
     try {
-      const response = await axios.put(`http://localhost:8081/courses/${courseId}`, {
+      const response = await axios.put(`https://knowly-back.onrender.com/courses/${courseId}`, {
         name: courseName,
         price: parseFloat(coursePrice),
       });
@@ -46,7 +46,7 @@ const CoursesAdmin = () => {
 
   const deleteCourse = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8081/courses/${courseId}`);
+      const response = await axios.delete(`https://knowly-back.onrender.com/courses/${courseId}`);
       console.log('Course deleted:', response.data);
       alert("Course deleted !")
     } catch (error) {
@@ -65,7 +65,7 @@ const CoursesAdmin = () => {
 
     
     const courseId = lessonCourseId; 
-    const response = await axios.post(`http://localhost:8081/courses/${courseId}/lessons`, payload);
+    const response = await axios.post(`https://knowly-back.onrender.com/courses/${courseId}/lessons`, payload);
 
     console.log('Lesson created:', response.data);
     alert("Lesson created and associated with course!");
@@ -88,7 +88,7 @@ const CoursesAdmin = () => {
     };
 
     const courseId = lessonCourseId; // Assurez-vous que cette variable contient l'ID du cours
-    const response = await axios.put(`http://localhost:8081/courses/${courseId}/lessons/${lessonId}`, payload);
+    const response = await axios.put(`https://knowly-back.onrender.com/courses/${courseId}/lessons/${lessonId}`, payload);
 
     console.log('Lesson updated:', response.data);
     alert("Lesson updated successfully!");
@@ -106,7 +106,7 @@ const CoursesAdmin = () => {
 const deleteLesson = async () => {
   try {
     const courseId = lessonCourseId; 
-    const response = await axios.delete(`http://localhost:8081/courses/${courseId}/lessons/${lessonId}`);
+    const response = await axios.delete(`https://knowly-back.onrender.com/courses/${courseId}/lessons/${lessonId}`);
     console.log('Lesson deleted:', response.data);
     alert("Lesson deleted successfully!");
   } catch (error) {
