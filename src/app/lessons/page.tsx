@@ -28,7 +28,7 @@ const CoursesPage = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://localhost:8081/courses');
+        const response = await axios.get('https://knowly-back.onrender.com/courses');
         setCourses(response.data);
       } catch (error) {
         console.error('Erreur lors du chargement des cours:', error);
@@ -44,7 +44,7 @@ const CoursesPage = () => {
       try {
         const lessonsMap: Record<number, Lesson[]> = {};
         for (const course of courses) {
-          const response = await axios.get(`http://localhost:8081/courses/${course.id}/lessons`);
+          const response = await axios.get(`https://knowly-back.onrender.com/${course.id}/lessons`);
           lessonsMap[course.id] = response.data;
         }
         setLessonsByCourse(lessonsMap);
