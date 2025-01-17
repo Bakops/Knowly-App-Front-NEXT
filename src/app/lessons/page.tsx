@@ -44,12 +44,17 @@ const CoursesPage = () => {
       try {
         const lessonsMap: Record<number, Lesson[]> = {};
         for (const course of courses) {
-          const response = await axios.get(`https://knowly-back.onrender.com/${course.id}/lessons`);
-          lessonsMap[course.id] = response.data;
+          try {
+            const response = await axios.get(`https://knowly-back.onrender.com/courses/${course.id}/lessons`);
+            lessonsMap[course.id] = response.data || []; // Assurez-vous d'avoir une liste vide par défaut
+          } catch (error) {
+            console.error(`Erreur lors du chargement des leçons pour le cours ${course.id}:`, error);
+            lessonsMap[course.id] = []; // Définit une liste vide en cas d'erreur
+          }
         }
         setLessonsByCourse(lessonsMap);
       } catch (error) {
-        console.error('Erreur lors du chargement des leçons:', error);
+        console.error('Erreur générale lors du chargement des leçons:', error);
       }
     };
 
@@ -83,7 +88,7 @@ const CoursesPage = () => {
                   lessonsByCourse[course.id].map((lesson) => (
                     <div key={lesson.id} style={{ marginBottom: '10px' }}>
                       <strong>{lesson.name}</strong>
-                      <strong>ID:{lesson.id}</strong>
+                      <strong>ID: {lesson.id}</strong>
                       <p>{lesson.content}</p>
                     </div>
                   ))
