@@ -23,7 +23,7 @@ export default function HeroHeader() {
                         Apprenez à votre rythme, réussissez à votre manière<span className="text-[#c3cc50]">.</span>
                     </h1>
 
-                    <p className="mt-8 text-base text-black text-left sm:text-xl">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat.</p>
+                    <p className="mt-8 text-base text-black text-left sm:text-xl">Apprenez à coder en ligne ! 🚀 Cours interactifs, projets pratiques et experts dédiés pour vous aider à maîtriser la programmation. Commencez maintenant !</p>
                     <div className="flex flex-col sm:flex-row gap-5 mt-8 md:justify-left">
                     <button className="button_app w-full sm:w-auto bg-[#c3cc50] text-[#1a1a1a] px-5 py-3 text-sm sm:text-base rounded-md hover:bg-slate-300 hover:text-[#c3cc50] cursor-pointer">
                         <a href="/api/All_translator">En savoir plus</a>
