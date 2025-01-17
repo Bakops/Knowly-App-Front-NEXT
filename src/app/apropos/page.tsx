@@ -9,7 +9,7 @@ const AboutPage: React.FC = () => {
       
       <section className="flex-grow max-w-2xl mx-auto">
         <p className="mb-5 text-lg">
-          Knowly is your go-to platform for online courses, designed to empower learners and educators alike. Our mission is to make quality education accessible to everyone, everywhere.
+          Knowly is your go-to platform for allons courses, designed to empower learners and educators alike. Our mission is to make quality education accessible to everyone, everywhere.
         </p>
         <p className="mb-5 text-lg">
           Whether you're looking to develop new skills, advance your career, or simply explore new interests, Knowly offers a wide range of courses tailored to your needs. Our platform connects you with expert instructors and a community of learners from around the globe.
