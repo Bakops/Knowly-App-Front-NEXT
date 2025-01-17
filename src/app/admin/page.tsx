@@ -17,19 +17,19 @@ const CoursesAdmin = () => {
   const [lessonCourseId, setLessonCourseId] = useState(''); // To associate lesson with course
 
   // Course handlers
-  const createCourse = async () => {
-    try {
-      const response = await axios.post('https://knowly-back.onrender.com/courses/', {
-        id: Math.floor(Math.random() * 1000),
-        name: courseName,
-        price: parseFloat(coursePrice),
-      });
-      console.log('Course created:', response.data);
-      alert("Course created !")
-    } catch (error) {
-      console.error('Error creating course:', error);
-    }
-  };
+const createCourse = async () => {
+  try {
+    const response = await axios.post('https://knowly-back.onrender.com/courses/', {
+      name: courseName,
+      price: parseFloat(coursePrice),
+    });
+    console.log('Course created:', response.data);
+    alert("Course created !");
+  } catch (error) {
+    console.error('Error creating course:', error);
+  }
+};
+
 
   const updateCourse = async () => {
     try {
@@ -45,14 +45,19 @@ const CoursesAdmin = () => {
   };
 
   const deleteCourse = async () => {
-    try {
-      const response = await axios.delete(`https://knowly-back.onrender.com/courses/${courseId}`);
-      console.log('Course deleted:', response.data);
-      alert("Course deleted !")
-    } catch (error) {
-      console.error('Error creating course:', error);
-    }
-  };
+  if (!courseId) {
+    alert("Please provide a valid course ID.");
+    return;
+  }
+  try {
+    const response = await axios.delete(`https://knowly-back.onrender.com/courses/${courseId}`);
+    console.log('Course deleted:', response.data);
+    alert("Course deleted !");
+  } catch (error) {
+    console.error('Error deleting course:', error);
+  }
+};
+
 
 
   const createLesson = async () => {
