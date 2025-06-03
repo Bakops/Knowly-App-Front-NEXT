@@ -5,60 +5,59 @@ import Link from "next/link";
 import { useState } from "react";
 
 const CoursesAdmin = () => {
-  // State for courses
+  // États pour les cours
   const [courseId, setCourseId] = useState("");
   const [courseName, setCourseName] = useState("");
   const [coursePrice, setCoursePrice] = useState("");
 
-  // State for lessons
+  // États pour les leçons
   const [lessonId, setLessonId] = useState("");
   const [lessonName, setLessonName] = useState("");
   const [lessonContent, setLessonContent] = useState("");
   const [lessonCourseId, setLessonCourseId] = useState("");
 
-  // Course handlers
   const createCourse = async () => {
     try {
-      const response = await axios.post("http://localhost:8081/courses", {
+      const response = await axios.post(`http://localhost:3001/courses`, {
         name: courseName,
         price: parseFloat(coursePrice),
       });
-      console.log("Course created:", response.data);
-      alert("Course created !");
+      console.log("Cours créé :", response.data);
+      alert("Cours créé !");
     } catch (error) {
-      console.error("Error creating course:", error);
+      console.error("Erreur lors de la création du cours :", error);
     }
   };
 
   const updateCourse = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8081/courses/${courseId}`,
+        `http://localhost:3001/courses/${courseId}`,
         {
           name: courseName,
           price: parseFloat(coursePrice),
         }
       );
-      console.log("Course updated:", response.data);
-      alert("Course updated !");
+      console.log("Cours modifié :", response.data);
+      alert("Cours modifié !");
     } catch (error) {
-      console.error("Error creating course:", error);
+      console.error("Erreur lors de la modification du cours :", error);
     }
   };
 
   const deleteCourse = async () => {
     if (!courseId) {
-      alert("Please provide a valid course ID.");
+      alert("Veuillez fournir un ID de cours valide.");
       return;
     }
     try {
       const response = await axios.delete(
-        `http://localhost:8081/courses/${courseId}`
+        `http://localhost:3001/courses/${courseId}`
       );
-      console.log("Course deleted:", response.data);
-      alert("Course deleted !");
+      console.log("Cours supprimé :", response.data);
+      alert("Cours supprimé !");
     } catch (error) {
-      console.error("Error deleting course:", error);
+      console.error("Erreur lors de la suppression du cours :", error);
     }
   };
 
@@ -68,22 +67,22 @@ const CoursesAdmin = () => {
         name: lessonName,
         content: lessonContent,
       };
-      console.log("Payload sent to API:", payload);
+      console.log("Données envoyées à l'API :", payload);
 
       const courseId = lessonCourseId;
       const response = await axios.post(
-        `http://localhost:8081/courses/${courseId}/lessons`,
+        `http://localhost:3001/courses/${courseId}/lessons`,
         payload
       );
 
-      console.log("Lesson created:", response.data);
-      alert("Lesson created and associated with course!");
+      console.log("Leçon créée :", response.data);
+      alert("Leçon créée et associée au cours !");
     } catch (error) {
-      console.error("Error creating lesson:", error);
+      console.error("Erreur lors de la création de la leçon :", error);
       if (axios.isAxiosError(error)) {
-        alert(`API Error: ${error.response?.data || "Unknown error occurred"}`);
+        alert(`Erreur API : ${error.response?.data || "Erreur inconnue"}`);
       } else {
-        alert("An unknown error occurred.");
+        alert("Une erreur inconnue est survenue.");
       }
     }
   };
@@ -97,18 +96,18 @@ const CoursesAdmin = () => {
 
       const courseId = lessonCourseId;
       const response = await axios.put(
-        `http://localhost:8081/courses/${courseId}/lessons/${lessonId}`,
+        `http://localhost:3001/courses/${courseId}/lessons/${lessonId}`,
         payload
       );
 
-      console.log("Lesson updated:", response.data);
-      alert("Lesson updated successfully!");
+      console.log("Leçon modifiée :", response.data);
+      alert("Leçon modifiée avec succès !");
     } catch (error) {
-      console.error("Error updating lesson:", error);
+      console.error("Erreur lors de la modification de la leçon :", error);
       if (axios.isAxiosError(error)) {
-        alert(`API Error: ${error.response?.data || "Unknown error occurred"}`);
+        alert(`Erreur API : ${error.response?.data || "Erreur inconnue"}`);
       } else {
-        alert("An unknown error occurred.");
+        alert("Une erreur inconnue est survenue.");
       }
     }
   };
@@ -117,16 +116,16 @@ const CoursesAdmin = () => {
     try {
       const courseId = lessonCourseId;
       const response = await axios.delete(
-        `http://localhost:8081/courses/${courseId}/lessons/${lessonId}`
+        `http://localhost:3001/courses/${courseId}/lessons/${lessonId}`
       );
-      console.log("Lesson deleted:", response.data);
-      alert("Lesson deleted successfully!");
+      console.log("Leçon supprimée :", response.data);
+      alert("Leçon supprimée avec succès !");
     } catch (error) {
-      console.error("Error deleting lesson:", error);
+      console.error("Erreur lors de la suppression de la leçon :", error);
       if (axios.isAxiosError(error)) {
-        alert(`API Error: ${error.response?.data || "Unknown error occurred"}`);
+        alert(`Erreur API : ${error.response?.data || "Erreur inconnue"}`);
       } else {
-        alert("An unknown error occurred.");
+        alert("Une erreur inconnue est survenue.");
       }
     }
   };
@@ -141,7 +140,7 @@ const CoursesAdmin = () => {
     >
       <div className="flex justify-end">
         <Link href="/">
-          <button style={buttonStyleDELETE}>Return Home</button>
+          <button style={buttonStyleDELETE}>Retour à l'accueil</button>
         </Link>
       </div>
 
@@ -156,80 +155,80 @@ const CoursesAdmin = () => {
         KnowlyAdmin - Cours & Leçons
       </h1>
 
-      {/* Courses Section */}
+      {/* Section Cours */}
       <div style={{ marginBottom: "40px" }}>
         <h2 style={{ color: "#c3cc50" }}>Cours</h2>
         <input
           type="text"
           value={courseId}
           onChange={(e) => setCourseId(e.target.value)}
-          placeholder="Course ID"
+          placeholder="ID du cours"
           style={inputStyle}
         />
         <input
           type="text"
           value={courseName}
           onChange={(e) => setCourseName(e.target.value)}
-          placeholder="Course Name"
+          placeholder="Nom du cours"
           style={inputStyle}
         />
         <input
           type="text"
           value={coursePrice}
           onChange={(e) => setCoursePrice(e.target.value)}
-          placeholder="Course Price"
+          placeholder="Prix du cours"
           style={inputStyle}
         />
         <button onClick={createCourse} style={buttonStyleCREATE}>
-          Create Course
+          Créer le cours
         </button>
         <button onClick={updateCourse} style={buttonStyleUPDATE}>
-          Update Course
+          Modifier le cours
         </button>
         <button onClick={deleteCourse} style={buttonStyleDELETE}>
-          Delete Course
+          Supprimer le cours
         </button>
       </div>
 
-      {/* Lessons Section */}
+      {/* Section Leçons */}
       <div>
         <h2 style={{ color: "#c3cc50" }}>Leçons</h2>
         <input
           type="text"
           value={lessonId}
           onChange={(e) => setLessonId(e.target.value)}
-          placeholder="Lesson ID"
+          placeholder="ID de la leçon"
           style={inputStyle}
         />
         <input
           type="text"
           value={lessonName}
           onChange={(e) => setLessonName(e.target.value)}
-          placeholder="Lesson Name"
+          placeholder="Nom de la leçon"
           style={inputStyle}
         />
         <input
           type="text"
           value={lessonContent}
           onChange={(e) => setLessonContent(e.target.value)}
-          placeholder="Lesson Content"
+          placeholder="Contenu de la leçon"
           style={inputStyle}
         />
         <input
           type="text"
           value={lessonCourseId}
           onChange={(e) => setLessonCourseId(e.target.value)}
-          placeholder="Associated Course ID"
+          placeholder="ID du cours associé"
           style={inputStyle}
         />
         <button onClick={createLesson} style={buttonStyleCREATE}>
-          Create Lesson
+          Créer la leçon
         </button>
         <button onClick={updateLesson} style={buttonStyleUPDATE}>
-          Update Lesson
+          Modifier la leçon
         </button>
         <button onClick={deleteLesson} style={buttonStyleDELETE}>
-          Delete Lesson
+          Supprimer la leçon
         </button>
       </div>
     </div>

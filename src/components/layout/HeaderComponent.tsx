@@ -1,9 +1,11 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function HeaderComponent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -73,22 +75,33 @@ export default function HeaderComponent() {
           </ul>
         </nav>
 
-        <div className="hidden md:flex flex-wrap items-center justify-center gap-4">
-          <Link
-            href="/api/auth/login"
-            title="Se connecter"
-            className="inline-flex items-center justify-center py-1.5 px-4 text-sm font-semibold text-white hover:text-[#c3cc50] transition-all duration-200"
-          >
-            Se connecter
-          </Link>
-
-          <Link
-            href="/api/auth/login?screen_hint=signup"
-            title="S'inscrire"
-            className="inline-flex items-center justify-center py-1.5 px-4 text-sm font-semibold text-[#c3cc50] bg-white rounded-full transition-all duration-200 border-b-2 border-transparent hover:bg-[#c3cc50] hover:text-[#FFF]"
-          >
-            S'inscrire
-          </Link>
+        {/* Icône panier */}
+        <div className="flex items-center gap-4">
+          {/* Auth buttons */}
+          <div className="hidden md:flex flex-wrap items-center justify-center gap-4">
+            <Link
+              href="/cart"
+              title="Voir le panier"
+              className="relative group"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="23"
+                height="23"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
+              </svg>
+            </Link>
+            <Link
+              href="/api/auth/login"
+              title="Se connecter"
+              className="inline-flex items-center justify-center py-1.5 px-4 text-sm font-semibold text-[#c3cc50] bg-white rounded-full transition-all duration-200 border-b-2 border-transparent hover:bg-[#c3cc50] hover:text-[#FFF]"
+            >
+              Se connecter
+            </Link>
+          </div>
         </div>
 
         {/* Hamburger menu for mobile */}
