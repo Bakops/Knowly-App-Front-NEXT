@@ -1,10 +1,9 @@
 "use client";
 
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import LessonCardProps from '@/components/layout/LessonCard';
-import HeaderComponent from '@/components/layout/HeaderComponent';
-import CourseCard from '@/components/layout/CourseCard';
+import CourseCard from "@/components/layout/CourseCard";
+import HeaderComponent from "@/components/layout/HeaderComponent";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 // Définir une interface pour un cours et une leçon
 interface Course {
@@ -22,16 +21,18 @@ interface Lesson {
 
 const CoursesPage = () => {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [lessonsByCourse, setLessonsByCourse] = useState<Record<number, Lesson[]>>({});
+  const [lessonsByCourse, setLessonsByCourse] = useState<
+    Record<number, Lesson[]>
+  >({});
 
   // Récupérer tous les cours
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('https://knowly-back.onrender.com/courses');
+        const response = await axios.get("http://localhost:3001/courses");
         setCourses(response.data);
       } catch (error) {
-        console.error('Erreur lors du chargement des cours:', error);
+        console.error("Erreur lors du chargement des cours:", error);
       }
     };
 
@@ -45,16 +46,21 @@ const CoursesPage = () => {
         const lessonsMap: Record<number, Lesson[]> = {};
         for (const course of courses) {
           try {
-            const response = await axios.get(`https://knowly-back.onrender.com/courses/${course.id}/lessons`);
+            const response = await axios.get(
+              `http://localhost:3001/courses/${course.id}/lessons`
+            );
             lessonsMap[course.id] = response.data || []; // Assurez-vous d'avoir une liste vide par défaut
           } catch (error) {
-            console.error(`Erreur lors du chargement des leçons pour le cours ${course.id}:`, error);
+            console.error(
+              `Erreur lors du chargement des leçons pour le cours ${course.id}:`,
+              error
+            );
             lessonsMap[course.id] = []; // Définit une liste vide en cas d'erreur
           }
         }
         setLessonsByCourse(lessonsMap);
       } catch (error) {
-        console.error('Erreur générale lors du chargement des leçons:', error);
+        console.error("Erreur générale lors du chargement des leçons:", error);
       }
     };
 
@@ -68,32 +74,47 @@ const CoursesPage = () => {
       <HeaderComponent />
       <div
         style={{
-          minHeight: '20vh',
-          padding: '20px',
-          color: '#c3cc50',
-          display: 'flex',
-          justifyContent: 'center',
+          minHeight: "20vh",
+          padding: "20px",
+          color: "#c3cc50",
+          display: "flex",
+          justifyContent: "center",
         }}
       >
-        <div style={{ display: 'flex', flexWrap: 'wrap', width: '59%' }}>
+        <div style={{ display: "flex", flexWrap: "wrap", width: "59%" }}>
           {courses.map((course) => (
-            <div key={course.id} style={{ marginBottom: '20px', width: '100%', display: 'flex', alignItems: 'center' }}>
+            <div
+              key={course.id}
+              style={{
+                marginBottom: "20px",
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
               {/* Affichage des informations du cours */}
-              <CourseCard id={course.id} name={course.name} price={course.price} />
+              <CourseCard
+                id={course.id}
+                name={course.name}
+                price={course.price}
+              />
 
               {/* Affichage des leçons associées */}
-              <div style={{ marginLeft: '20px', marginTop: '10px' }}>
-                <h4 style={{ color: '#c3cc50' }}>Leçons :</h4>
-                {lessonsByCourse[course.id] && lessonsByCourse[course.id].length > 0 ? (
+              <div style={{ marginLeft: "20px", marginTop: "10px" }}>
+                <h4 style={{ color: "#c3cc50" }}>Leçons :</h4>
+                {lessonsByCourse[course.id] &&
+                lessonsByCourse[course.id].length > 0 ? (
                   lessonsByCourse[course.id].map((lesson) => (
-                    <div key={lesson.id} style={{ marginBottom: '10px' }}>
+                    <div key={lesson.id} style={{ marginBottom: "10px" }}>
                       <strong>{lesson.name}</strong>
                       <strong>ID: {lesson.id}</strong>
                       <p>{lesson.content}</p>
                     </div>
                   ))
                 ) : (
-                  <p style={{ color: '#aaa' }}>Aucune leçon disponible pour ce cours.</p>
+                  <p style={{ color: "#aaa" }}>
+                    Aucune leçon disponible pour ce cours.
+                  </p>
                 )}
               </div>
             </div>
