@@ -2,11 +2,33 @@
 import { useCart } from "@/components/layout/CartContextComponent";
 import HeaderComponent from "@/components/layout/HeaderComponent";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function CartPage() {
   const { cart, removeFromCart, clearCart } = useCart();
+  const [loading, setLoading] = useState(false);
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const handleCheckout = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/stripe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cart }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Erreur lors de la redirection vers Stripe.");
+      }
+    } catch (e) {
+      alert("Erreur lors de la connexion à Stripe.");
+    }
+    setLoading(false);
+  };
 
   return (
     <>
@@ -61,11 +83,11 @@ export default function CartPage() {
               <div className="flex justify-between">
                 <button
                   className="bg-[#c3cc50] text-gray-900 font-bold px-6 py-2 rounded hover:bg-[#b1b93f] transition"
-                  // onClick={handleCheckout} // Ajoute ta logique Stripe ici
-                  disabled
-                  title="Paiement à venir"
+                  onClick={handleCheckout}
+                  disabled={loading}
+                  title="Payer avec Stripe"
                 >
-                  Payer
+                  {loading ? "Redirection..." : "Payer"}
                 </button>
                 <button
                   className="bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700 transition"

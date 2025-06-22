@@ -1,4 +1,5 @@
 "use client";
+import { useCart } from "@/components/layout/CartContextComponent"; // Ajout du hook panier
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -6,10 +7,14 @@ import { useState } from "react";
 export default function HeaderComponent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
+  const { cart } = useCart(); // Récupère le panier
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  // Calcul du nombre total d'éléments dans le panier
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <div className="flex justify-around gap-9 align-middle m-6 h-height_header">
@@ -77,23 +82,24 @@ export default function HeaderComponent() {
 
         {/* Icône panier */}
         <div className="flex items-center gap-4">
+          <Link href="/cart" title="Voir le panier" className="relative group">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="23"
+              height="23"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
+            </svg>
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5 shadow-lg">
+                {cartCount}
+              </span>
+            )}
+          </Link>
           {/* Auth buttons */}
           <div className="hidden md:flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href="/cart"
-              title="Voir le panier"
-              className="relative group"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="23"
-                height="23"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
-              </svg>
-            </Link>
             <Link
               href="/api/auth/login"
               title="Se connecter"
