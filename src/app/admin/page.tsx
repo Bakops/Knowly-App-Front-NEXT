@@ -18,10 +18,13 @@ const CoursesAdmin = () => {
 
   const createCourse = async () => {
     try {
-      const response = await axios.post(`http://localhost:3001/courses`, {
-        name: courseName,
-        price: parseFloat(coursePrice),
-      });
+      const response = await axios.post(
+        `https://knowly-back.onrender.com/courses`,
+        {
+          name: courseName,
+          price: parseFloat(coursePrice),
+        }
+      );
       console.log("Cours créé :", response.data);
       alert("Cours créé !");
     } catch (error) {
@@ -32,7 +35,7 @@ const CoursesAdmin = () => {
   const updateCourse = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:3001/courses/${courseId}`,
+        `https://knowly-back.onrender.com/courses/${courseId}`,
         {
           name: courseName,
           price: parseFloat(coursePrice),
@@ -52,7 +55,7 @@ const CoursesAdmin = () => {
     }
     try {
       const response = await axios.delete(
-        `http://localhost:3001/courses/${courseId}`
+        `https://knowly-back.onrender.com/courses/${courseId}`
       );
       console.log("Cours supprimé :", response.data);
       alert("Cours supprimé !");
@@ -71,7 +74,7 @@ const CoursesAdmin = () => {
 
       const courseId = lessonCourseId;
       const response = await axios.post(
-        `http://localhost:3001/courses/${courseId}/lessons`,
+        `https://knowly-back.onrender.com/courses/${courseId}/lessons`,
         payload
       );
 
@@ -96,7 +99,7 @@ const CoursesAdmin = () => {
 
       const courseId = lessonCourseId;
       const response = await axios.put(
-        `http://localhost:3001/courses/${courseId}/lessons/${lessonId}`,
+        `https://knowly-back.onrender.com/courses/${courseId}/lessons/${lessonId}`,
         payload
       );
 
@@ -116,7 +119,7 @@ const CoursesAdmin = () => {
     try {
       const courseId = lessonCourseId;
       const response = await axios.delete(
-        `http://localhost:3001/courses/${courseId}/lessons/${lessonId}`
+        `https://knowly-back.onrender.com/courses/${courseId}/lessons/${lessonId}`
       );
       console.log("Leçon supprimée :", response.data);
       alert("Leçon supprimée avec succès !");

@@ -29,7 +29,9 @@ export default function CourseDetailPage() {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const res = await axios.get(`http://localhost:3001/courses/${id}`);
+        const res = await axios.get(
+          `https://knowly-back.onrender.com/courses/${id}`
+        );
         setCourse(res.data);
       } catch (error) {
         setCourse(null);
@@ -38,7 +40,7 @@ export default function CourseDetailPage() {
     const fetchLessons = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3001/courses/${id}/lessons`
+          `https://knowly-back.onrender.com/courses/${id}/lessons`
         );
         setLessons(res.data);
       } catch (error) {

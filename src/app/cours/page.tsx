@@ -17,7 +17,9 @@ const CoursesPage = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/courses");
+        const response = await axios.get(
+          "https://knowly-back.onrender.com/courses"
+        );
         setCourses(response.data);
       } catch (error) {
         console.error("Erreur lors du chargement des cours:", error);
