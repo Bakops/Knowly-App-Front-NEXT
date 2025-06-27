@@ -30,7 +30,7 @@ const CoursesPage = () => {
     const fetchCourses = async () => {
       try {
         const response = await axios.get(
-          "https://knowly-back.onrender.com/courses"
+          "https://api-spring-l3i0.onrender.com/courses"
         );
         setCourses(response.data);
       } catch (error) {
@@ -49,7 +49,7 @@ const CoursesPage = () => {
         for (const course of courses) {
           try {
             const response = await axios.get(
-              `https://knowly-back.onrender.com/courses/${course.id}/lessons`
+              `https://api-spring-l3i0.onrender.com/courses/${course.id}/lessons`
             );
             lessonsMap[course.id] = response.data || []; // Assurez-vous d'avoir une liste vide par défaut
           } catch (error) {

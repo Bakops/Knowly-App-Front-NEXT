@@ -19,7 +19,7 @@ const CoursesAdmin = () => {
   const createCourse = async () => {
     try {
       const response = await axios.post(
-        `https://knowly-back.onrender.com/courses`,
+        `https://api-spring-l3i0.onrender.com/courses`,
         {
           name: courseName,
           price: parseFloat(coursePrice),
@@ -35,7 +35,7 @@ const CoursesAdmin = () => {
   const updateCourse = async () => {
     try {
       const response = await axios.put(
-        `https://knowly-back.onrender.com/courses/${courseId}`,
+        `https://api-spring-l3i0.onrender.com/courses/${courseId}`,
         {
           name: courseName,
           price: parseFloat(coursePrice),
@@ -55,7 +55,7 @@ const CoursesAdmin = () => {
     }
     try {
       const response = await axios.delete(
-        `https://knowly-back.onrender.com/courses/${courseId}`
+        `https://api-spring-l3i0.onrender.com/courses/${courseId}`
       );
       console.log("Cours supprimé :", response.data);
       alert("Cours supprimé !");
@@ -74,7 +74,7 @@ const CoursesAdmin = () => {
 
       const courseId = lessonCourseId;
       const response = await axios.post(
-        `https://knowly-back.onrender.com/courses/${courseId}/lessons`,
+        `https://api-spring-l3i0.onrender.com/courses/${courseId}/lessons`,
         payload
       );
 
@@ -99,7 +99,7 @@ const CoursesAdmin = () => {
 
       const courseId = lessonCourseId;
       const response = await axios.put(
-        `https://knowly-back.onrender.com/courses/${courseId}/lessons/${lessonId}`,
+        `https://api-spring-l3i0.onrender.com/courses/${courseId}/lessons/${lessonId}`,
         payload
       );
 
@@ -119,7 +119,7 @@ const CoursesAdmin = () => {
     try {
       const courseId = lessonCourseId;
       const response = await axios.delete(
-        `https://knowly-back.onrender.com/courses/${courseId}/lessons/${lessonId}`
+        `https://api-spring-l3i0.onrender.com/courses/${courseId}/lessons/${lessonId}`
       );
       console.log("Leçon supprimée :", response.data);
       alert("Leçon supprimée avec succès !");
