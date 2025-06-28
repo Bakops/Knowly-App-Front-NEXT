@@ -30,7 +30,7 @@ export default function CourseDetailPage() {
     const fetchCourse = async () => {
       try {
         const res = await axios.get(
-          `https://knowly-back.onrender.com/courses/${id}`
+          `https://api-spring-l3i0.onrender.com/courses/${id}`
         );
         setCourse(res.data);
       } catch (error) {
@@ -40,7 +40,7 @@ export default function CourseDetailPage() {
     const fetchLessons = async () => {
       try {
         const res = await axios.get(
-          `https://knowly-back.onrender.com/courses/${id}/lessons`
+          `https://api-spring-l3i0.onrender.com/courses/${id}/lessons`
         );
         setLessons(res.data);
       } catch (error) {
