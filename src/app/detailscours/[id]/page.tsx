@@ -24,6 +24,7 @@ export default function CourseDetailPage() {
   const [course, setCourse] = useState<Course | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
+  const [added, setAdded] = useState(false);
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -57,7 +58,9 @@ export default function CourseDetailPage() {
       <>
         <HeaderComponent />
         <div className="flex-1 flex items-center justify-center py-20">
-          <div className="text-center text-xl text-gray-500">Chargement...</div>
+          <div className="text-center text-xl text-gray-500 animate-pulse">
+            Chargement...
+          </div>
         </div>
       </>
     );
@@ -67,7 +70,7 @@ export default function CourseDetailPage() {
       <>
         <HeaderComponent />
         <div className="flex-1 flex items-center justify-center py-20">
-          <div className="text-center text-red-500 text-xl">
+          <div className="text-center text-red-500 text-xl animate-fade-in-down">
             Ce cours n'existe pas.
             <br />
             <Link href="/" className="text-blue-400 underline">
@@ -81,20 +84,20 @@ export default function CourseDetailPage() {
   return (
     <>
       <HeaderComponent />
-      <main className="max-w-4xl mx-auto px-4 py-12">
+      <main className="max-w-4xl mx-auto px-4 py-12 font-poppins">
         <div className="mb-8">
           <Link
             href="/cours"
-            className="text-[#c3cc50] hover:underline text-sm"
+            className="text-[#c3cc50] hover:underline text-sm animate-fade-in-down"
           >
             &larr; Retour aux cours
           </Link>
         </div>
-        <section className="flex flex-col md:flex-row gap-10">
+        <section className="flex flex-col md:flex-row gap-10 animate-fade-in-up">
           {/* Illustration fictive ou image */}
           <div className="flex-shrink-0 flex items-center justify-center w-full md:w-1/3">
-            <div className="rounded-xl w-56 h-56 flex items-center justify-center border-4 border-[#c3cc50] bg-white">
-              <span className="text-8xl font-black text-[#c3cc50]">
+            <div className="rounded-xl w-56 h-56 flex items-center justify-center border-4 border-[#c3cc50] bg-white shadow-lg animate-fade-in-down">
+              <span className="text-8xl font-black text-[#c3cc50] animate-bounce">
                 {course.name[0]}
               </span>
             </div>
@@ -102,10 +105,10 @@ export default function CourseDetailPage() {
           {/* Détails du cours */}
           <div className="flex-1 flex flex-col justify-between">
             <div>
-              <h1 className="text-4xl font-extrabold mb-4 text-gray-900">
+              <h1 className="text-4xl font-extrabold mb-4 text-gray-900 animate-fade-in-down">
                 {course.name}
               </h1>
-              <p className="mb-6 text-gray-700 text-lg">
+              <p className="mb-6 text-gray-700 text-lg animate-fade-in-up">
                 {course.description || "Aucune description pour ce cours."}
               </p>
               <div>
@@ -115,18 +118,21 @@ export default function CourseDetailPage() {
                 </span>
               </div>
               {/* Leçons associées */}
-              <div className="mb-8">
-                <h2 className="text-xl font-bold text-gray-900 mb-2">
+              <div className="mb-8 mt-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-2 animate-fade-in-down">
                   Leçons associées
                 </h2>
                 {lessons.length === 0 ? (
-                  <p className="text-gray-500">Aucune leçon pour ce cours.</p>
+                  <p className="text-gray-500 animate-fade-in-up">
+                    Aucune leçon pour ce cours.
+                  </p>
                 ) : (
                   <ul className="space-y-3">
-                    {lessons.map((lesson) => (
+                    {lessons.map((lesson, idx) => (
                       <li
                         key={lesson.id}
-                        className="border-b border-gray-200 pb-2"
+                        className="border-b border-gray-200 pb-2 animate-fade-in-up transition-transform duration-300 hover:scale-[1.03]"
+                        style={{ animationDelay: `${idx * 0.06 + 0.2}s` }}
                       >
                         <span className="font-semibold text-[#c3cc50]">
                           {lesson.name}
@@ -142,7 +148,9 @@ export default function CourseDetailPage() {
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <button
-                className="bg-[#c3cc50] text-gray-900 font-bold px-8 py-3 rounded-lg hover:bg-[#b1b93f] transition text-lg"
+                className={`bg-[#c3cc50] text-gray-900 font-bold px-8 py-3 rounded-lg hover:bg-[#b1b93f] transition text-lg shadow-lg hover:scale-105 duration-200 ${
+                  added ? "animate-pulse" : ""
+                }`}
                 onClick={() => {
                   addToCart({
                     id: course.id,
@@ -150,14 +158,15 @@ export default function CourseDetailPage() {
                     price: course.price,
                     quantity: 1,
                   });
-                  alert("Cours ajouté au panier !");
+                  setAdded(true);
+                  setTimeout(() => setAdded(false), 900);
                 }}
               >
-                Ajouter au panier
+                {added ? "Ajouté !" : "Ajouter au panier"}
               </button>
               <Link
                 href="/cart"
-                className="bg-gray-800 text-[#c3cc50] font-bold px-8 py-3 rounded-lg hover:bg-gray-900 transition text-lg text-center"
+                className="bg-gray-800 text-[#c3cc50] font-bold px-8 py-3 rounded-lg hover:bg-gray-900 transition text-lg text-center shadow-lg hover:scale-105 duration-200"
               >
                 Voir le panier
               </Link>

@@ -35,7 +35,7 @@ const CoursesPage = () => {
     <>
       <HeaderComponent />
       <div className="min-h-[20vh] py-8 flex flex-col items-center bg-white font-poppins">
-        <h1 className="text-3xl font-bold text-[#c3cc50] mb-8 animate-fade-in-down">
+        <h1 className="text-3xl font-bold text-[#c3cc50] hover:text-gray-700 mb-8 animate-fade-in-down">
           Nos cours
         </h1>
         {loading ? (

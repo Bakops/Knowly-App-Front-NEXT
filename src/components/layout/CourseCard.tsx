@@ -4,13 +4,13 @@ interface CourseCardProps {
   id: number;
   name: string;
   price: number;
-  imageUrl?: string; // Optionnel si tu veux passer une image différente par cours
+  imageUrl?: string;
 }
 
 const CourseCard = ({ id, name, price, imageUrl }: CourseCardProps) => (
   <Link href={`/detailscours/${id}`}>
     <div className="flex justify-center items-center">
-      <div className="bg-gray-800 shadow-lg rounded-xl p-0 m-4 w-72 hover:bg-[#c3cc50] hover:text-gray-800 cursor-pointer transition duration-300 overflow-hidden">
+      <div className="bg-gray-800 shadow-lg rounded-xl p-0 m-4 w-72 hover:bg-[#c3cc50] hover:text-gray-800 cursor-pointer transition duration-300 overflow-hidden group">
         <div className="h-40 w-full bg-gray-700 flex items-center justify-center">
           <img
             src={
@@ -22,7 +22,9 @@ const CourseCard = ({ id, name, price, imageUrl }: CourseCardProps) => (
           />
         </div>
         <div className="p-4">
-          <h3 className="text-[#c3cc50] text-xl font-bold mb-2">{name}</h3>
+          <h3 className="text-[#c3cc50] text-xl font-bold mb-2 group-hover:text-gray-700 transition-colors duration-300">
+            {name}
+          </h3>
           <p className="text-[#FFF] font-bold">Prix : {price}€</p>
           <p className="text-[#FFF] font-bold text-sm">ID : {id}</p>
         </div>
