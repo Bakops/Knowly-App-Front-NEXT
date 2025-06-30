@@ -1,179 +1,330 @@
 "use client";
-import { useCart } from "@/components/layout/CartContextComponent";
-import HeaderComponent from "@/components/layout/HeaderComponent";
+
 import axios from "axios";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-interface Course {
-  id: number;
-  name: string;
-  price: number;
-  description?: string;
-}
+const CoursesAdmin = () => {
+  // États pour les cours
+  const [courseId, setCourseId] = useState("");
+  const [courseName, setCourseName] = useState("");
+  const [coursePrice, setCoursePrice] = useState("");
 
-interface Lesson {
-  id: number;
-  name: string;
-  content: string;
-}
+  // États pour les leçons
+  const [lessonId, setLessonId] = useState("");
+  const [lessonName, setLessonName] = useState("");
+  const [lessonContent, setLessonContent] = useState("");
+  const [lessonCourseId, setLessonCourseId] = useState("");
 
-export default function CourseDetailPage() {
-  const { id } = useParams<{ id: string }>();
-  const [course, setCourse] = useState<Course | null>(null);
-  const [lessons, setLessons] = useState<Lesson[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [added, setAdded] = useState(false);
-  const { addToCart } = useCart();
+  // Alert personnalisée
+  const [alert, setAlert] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
-  useEffect(() => {
-    const fetchCourse = async () => {
-      try {
-        const res = await axios.get(
-          `https://api-spring-l3i0.onrender.com/courses/${id}`
-        );
-        setCourse(res.data);
-      } catch (error) {
-        setCourse(null);
-      }
-    };
-    const fetchLessons = async () => {
-      try {
-        const res = await axios.get(
-          `https://api-spring-l3i0.onrender.com/courses/${id}/lessons`
-        );
-        setLessons(res.data);
-      } catch (error) {
-        setLessons([]);
-      }
-    };
-    Promise.all([fetchCourse(), fetchLessons()]).finally(() =>
-      setLoading(false)
-    );
-  }, [id]);
+  // Animation loading
+  const [loading, setLoading] = useState(false);
 
-  if (loading)
-    return (
-      <>
-        <HeaderComponent />
-        <div className="flex-1 flex items-center justify-center py-20">
-          <div className="text-center text-xl text-gray-500 animate-pulse">
-            Chargement...
-          </div>
-        </div>
-      </>
-    );
+  const showAlert = (type: "success" | "error", message: string) => {
+    setAlert({ type, message });
+    setTimeout(() => setAlert(null), 2200);
+  };
 
-  if (!course)
-    return (
-      <>
-        <HeaderComponent />
-        <div className="flex-1 flex items-center justify-center py-20">
-          <div className="text-center text-red-500 text-xl animate-fade-in-down">
-            Ce cours n'existe pas.
-            <br />
-            <Link href="/" className="text-blue-400 underline">
-              Retour à l'accueil
-            </Link>
-          </div>
-        </div>
-      </>
-    );
+  const createCourse = async () => {
+    setLoading(true);
+    try {
+      await axios.post(`https://api-spring-l3i0.onrender.com/courses`, {
+        name: courseName,
+        price: parseFloat(coursePrice),
+      });
+      showAlert("success", "Cours créé !");
+    } catch (error) {
+      showAlert("error", "Erreur lors de la création du cours.");
+    }
+    setLoading(false);
+  };
+
+  const updateCourse = async () => {
+    setLoading(true);
+    try {
+      await axios.put(
+        `https://api-spring-l3i0.onrender.com/courses/${courseId}`,
+        {
+          name: courseName,
+          price: parseFloat(coursePrice),
+        }
+      );
+      showAlert("success", "Cours modifié !");
+    } catch (error) {
+      showAlert("error", "Erreur lors de la modification du cours.");
+    }
+    setLoading(false);
+  };
+
+  const deleteCourse = async () => {
+    if (!courseId) {
+      showAlert("error", "Veuillez fournir un ID de cours valide.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await axios.delete(
+        `https://api-spring-l3i0.onrender.com/courses/${courseId}`
+      );
+      showAlert("success", "Cours supprimé !");
+    } catch (error) {
+      showAlert("error", "Erreur lors de la suppression du cours.");
+    }
+    setLoading(false);
+  };
+
+  const createLesson = async () => {
+    setLoading(true);
+    try {
+      const payload = {
+        name: lessonName,
+        content: lessonContent,
+      };
+      const courseId = lessonCourseId;
+      await axios.post(
+        `https://api-spring-l3i0.onrender.com/courses/${courseId}/lessons`,
+        payload
+      );
+      showAlert("success", "Leçon créée et associée au cours !");
+    } catch (error) {
+      showAlert("error", "Erreur lors de la création de la leçon.");
+    }
+    setLoading(false);
+  };
+
+  const updateLesson = async () => {
+    setLoading(true);
+    try {
+      const payload = {
+        name: lessonName,
+        content: lessonContent,
+      };
+      const courseId = lessonCourseId;
+      await axios.put(
+        `https://api-spring-l3i0.onrender.com/courses/${courseId}/lessons/${lessonId}`,
+        payload
+      );
+      showAlert("success", "Leçon modifiée avec succès !");
+    } catch (error) {
+      showAlert("error", "Erreur lors de la modification de la leçon.");
+    }
+    setLoading(false);
+  };
+
+  const deleteLesson = async () => {
+    setLoading(true);
+    try {
+      const courseId = lessonCourseId;
+      await axios.delete(
+        `https://api-spring-l3i0.onrender.com/courses/${courseId}/lessons/${lessonId}`
+      );
+      showAlert("success", "Leçon supprimée avec succès !");
+    } catch (error) {
+      showAlert("error", "Erreur lors de la suppression de la leçon.");
+    }
+    setLoading(false);
+  };
 
   return (
-    <>
-      <HeaderComponent />
-      <main className="max-w-4xl mx-auto px-4 py-12 font-poppins">
-        <div className="mb-8">
-          <Link
-            href="/cours"
-            className="text-[#c3cc50] hover:underline text-sm animate-fade-in-down"
-          >
-            &larr; Retour aux cours
-          </Link>
+    <div className="min-h-screen py-10 px-4 font-poppins bg-gray-700 transition-colors duration-700">
+      {/* Alert personnalisée */}
+      {alert && (
+        <div
+          className={`fixed top-7 left-1/2 z-50 -translate-x-1/2 flex items-center gap-2 px-5 py-2 rounded-full shadow-lg text-sm font-semibold
+            animate-slide-fade
+            ${
+              alert.type === "success"
+                ? "bg-[#eaffd0] text-[#2e7d32] border border-[#b6e388]"
+                : "bg-[#ffeaea] text-[#b91c1c] border border-[#ffbdbd]"
+            }`}
+          style={{
+            minWidth: "220px",
+            maxWidth: "90vw",
+            letterSpacing: "0.01em",
+            boxShadow: "0 4px 24px 0 rgba(0,0,0,0.10)",
+          }}
+        >
+          {alert.type === "success" ? (
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="12" fill="#c3cc50" />
+              <path
+                d="M7 13l3 3 7-7"
+                stroke="#2e7d32"
+                strokeWidth="2"
+                fill="none"
+              />
+            </svg>
+          ) : (
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="12" fill="#ea3535" />
+              <path d="M9 9l6 6M15 9l-6 6" stroke="#fff" strokeWidth="2" />
+            </svg>
+          )}
+          <span>{alert.message}</span>
         </div>
-        <section className="flex flex-col md:flex-row gap-10 animate-fade-in-up">
-          {/* Illustration fictive ou image */}
-          <div className="flex-shrink-0 flex items-center justify-center w-full md:w-1/3">
-            <div className="rounded-xl w-56 h-56 flex items-center justify-center border-4 border-[#c3cc50] bg-white shadow-lg animate-fade-in-down">
-              <span className="text-8xl font-black text-[#c3cc50] animate-bounce">
-                {course.name[0]}
-              </span>
-            </div>
-          </div>
-          {/* Détails du cours */}
-          <div className="flex-1 flex flex-col justify-between">
-            <div>
-              <h1 className="text-4xl font-extrabold mb-4 text-gray-900 animate-fade-in-down">
-                {course.name}
-              </h1>
-              <p className="mb-6 text-gray-700 text-lg animate-fade-in-up">
-                {course.description || "Aucune description pour ce cours."}
-              </p>
-              <div>
-                <span className="text-xl font-bold text-gray-800">Prix :</span>
-                <span className="text-2xl font-extrabold text-[#c3cc50] ml-2">
-                  {course.price} €
-                </span>
-              </div>
-              {/* Leçons associées */}
-              <div className="mb-8 mt-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-2 animate-fade-in-down">
-                  Leçons associées
-                </h2>
-                {lessons.length === 0 ? (
-                  <p className="text-gray-500 animate-fade-in-up">
-                    Aucune leçon pour ce cours.
-                  </p>
-                ) : (
-                  <ul className="space-y-3">
-                    {lessons.map((lesson, idx) => (
-                      <li
-                        key={lesson.id}
-                        className="border-b border-gray-200 pb-2 animate-fade-in-up transition-transform duration-300 hover:scale-[1.03]"
-                        style={{ animationDelay: `${idx * 0.06 + 0.2}s` }}
-                      >
-                        <span className="font-semibold text-[#c3cc50]">
-                          {lesson.name}
-                        </span>
-                        <p className="text-gray-700 text-sm mt-1">
-                          {lesson.content}
-                        </p>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button
-                className={`bg-[#c3cc50] text-gray-900 font-bold px-8 py-3 rounded-lg hover:bg-[#b1b93f] transition text-lg shadow-lg hover:scale-105 duration-200 ${
-                  added ? "animate-pulse" : ""
-                }`}
-                onClick={() => {
-                  addToCart({
-                    id: course.id,
-                    name: course.name,
-                    price: course.price,
-                    quantity: 1,
-                  });
-                  setAdded(true);
-                  setTimeout(() => setAdded(false), 900);
-                }}
-              >
-                {added ? "Ajouté !" : "Ajouter au panier"}
-              </button>
-              <Link
-                href="/cart"
-                className="bg-gray-800 text-[#c3cc50] font-bold px-8 py-3 rounded-lg hover:bg-gray-900 transition text-lg text-center shadow-lg hover:scale-105 duration-200"
-              >
-                Voir le panier
-              </Link>
-            </div>
-          </div>
-        </section>
-      </main>
-    </>
+      )}
+
+      <div className="flex justify-end mb-4">
+        <Link href="/">
+          <button className="bg-[#ea3535] hover:bg-red-700 text-white px-4 py-2 rounded shadow transition-all duration-200">
+            Retour à l'accueil
+          </button>
+        </Link>
+      </div>
+
+      <h1 className="text-[#c3cc50] mb-8 font-extrabold text-3xl animate-fade-in-down">
+        KnowlyAdmin - Cours & Leçons
+      </h1>
+
+      {/* Section Cours */}
+      <div className="mb-10 bg-gray-800 rounded-xl p-6 shadow-lg animate-fade-in-up">
+        <h2 className="text-[#c3cc50] text-xl font-bold mb-4">Cours</h2>
+        <div className="flex flex-wrap gap-4 mb-4">
+          <input
+            type="text"
+            value={courseId}
+            onChange={(e) => setCourseId(e.target.value)}
+            placeholder="ID du cours"
+            className={inputClass}
+          />
+          <input
+            type="text"
+            value={courseName}
+            onChange={(e) => setCourseName(e.target.value)}
+            placeholder="Nom du cours"
+            className={inputClass}
+          />
+          <input
+            type="text"
+            value={coursePrice}
+            onChange={(e) => setCoursePrice(e.target.value)}
+            placeholder="Prix du cours"
+            className={inputClass}
+          />
+        </div>
+        <div className="flex flex-wrap gap-4">
+          <button
+            onClick={createCourse}
+            className={buttonClassCreate}
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="animate-pulse">Création...</span>
+            ) : (
+              "Créer le cours"
+            )}
+          </button>
+          <button
+            onClick={updateCourse}
+            className={buttonClassUpdate}
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="animate-pulse">Modification...</span>
+            ) : (
+              "Modifier le cours"
+            )}
+          </button>
+          <button
+            onClick={deleteCourse}
+            className={buttonClassDelete}
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="animate-pulse">Suppression...</span>
+            ) : (
+              "Supprimer le cours"
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Section Leçons */}
+      <div className="bg-gray-800 rounded-xl p-6 shadow-lg animate-fade-in-up">
+        <h2 className="text-[#c3cc50] text-xl font-bold mb-4">Leçons</h2>
+        <div className="flex flex-wrap gap-4 mb-4">
+          <input
+            type="text"
+            value={lessonId}
+            onChange={(e) => setLessonId(e.target.value)}
+            placeholder="ID de la leçon"
+            className={inputClass}
+          />
+          <input
+            type="text"
+            value={lessonName}
+            onChange={(e) => setLessonName(e.target.value)}
+            placeholder="Nom de la leçon"
+            className={inputClass}
+          />
+          <input
+            type="text"
+            value={lessonContent}
+            onChange={(e) => setLessonContent(e.target.value)}
+            placeholder="Contenu de la leçon"
+            className={inputClass}
+          />
+          <input
+            type="text"
+            value={lessonCourseId}
+            onChange={(e) => setLessonCourseId(e.target.value)}
+            placeholder="ID du cours associé"
+            className={inputClass}
+          />
+        </div>
+        <div className="flex flex-wrap gap-4">
+          <button
+            onClick={createLesson}
+            className={buttonClassCreate}
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="animate-pulse">Création...</span>
+            ) : (
+              "Créer la leçon"
+            )}
+          </button>
+          <button
+            onClick={updateLesson}
+            className={buttonClassUpdate}
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="animate-pulse">Modification...</span>
+            ) : (
+              "Modifier la leçon"
+            )}
+          </button>
+          <button
+            onClick={deleteLesson}
+            className={buttonClassDelete}
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="animate-pulse">Suppression...</span>
+            ) : (
+              "Supprimer la leçon"
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
   );
-}
+};
+
+const inputClass =
+  "p-3 rounded-lg border border-[#c3cc50] bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#c3cc50] transition-all duration-200 shadow-sm";
+
+const buttonClassCreate =
+  "bg-[#13c863] hover:bg-green-600 text-white font-bold px-6 py-2 rounded-lg shadow transition-all duration-200 focus:ring-2 focus:ring-[#13c863] focus:ring-offset-2";
+const buttonClassUpdate =
+  "bg-[#eeae37] hover:bg-yellow-600 text-white font-bold px-6 py-2 rounded-lg shadow transition-all duration-200 focus:ring-2 focus:ring-[#eeae37] focus:ring-offset-2";
+const buttonClassDelete =
+  "bg-[#ea3535] hover:bg-red-700 text-white font-bold px-6 py-2 rounded-lg shadow transition-all duration-200 focus:ring-2 focus:ring-[#ea3535] focus:ring-offset-2";
+
+export default CoursesAdmin;
