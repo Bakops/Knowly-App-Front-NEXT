@@ -5,7 +5,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --font-poppins: 'Poppins', Arial, Helvetica, sans-serif;
+  --font-poppins: "Poppins", Arial, Helvetica, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,21 +15,19 @@
   }
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 body {
   color: var(--foreground);
   background: var(--foreground);
-  font-family: var(--font-poppins);
+  font-family: "Poppins", sans-serif;
 }
-
-
 
 @layer components {
   .menu-link {
     @apply relative text-white no-underline px-2 py-1 text-base;
   }
-  
+
   .menu-link::before {
     content: "";
     position: absolute;
@@ -42,12 +40,12 @@ body {
     border-radius: 50%;
     transition: width 0.3s ease, height 0.3s ease;
   }
-  
+
   .menu-link:hover::before {
     width: 8px;
     height: 8px;
   }
-  
+
   .menu-link-active::before {
     width: 8px;
     height: 8px;
@@ -58,7 +56,6 @@ body {
     height: 8px;
   }
 }
-
 
 /* Conteneur principal */
 .slider-container {
@@ -107,7 +104,6 @@ body {
   animation-play-state: paused;
 }
 
-
 @keyframes slide {
   0% {
     transform: translateX(0);
@@ -127,7 +123,6 @@ ul li {
   flex-shrink: 0;
   width: auto;
 }
-
 
 .carousel {
   max-width: 1200px;
@@ -180,3 +175,55 @@ ul li {
   text-decoration: underline;
 }
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in {
+  animation: fade-in 0.7s both;
+}
+.animate-fade-in-left {
+  animation: fade-in-left 0.7s both;
+}
+.animate-fade-in-down {
+  animation: fade-in-down 0.7s both;
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.7s both;
+}
