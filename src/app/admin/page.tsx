@@ -16,7 +16,22 @@ const CoursesAdmin = () => {
   const [lessonContent, setLessonContent] = useState("");
   const [lessonCourseId, setLessonCourseId] = useState("");
 
+  // Alert personnalisée
+  const [alert, setAlert] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
+  // Animation loading
+  const [loading, setLoading] = useState(false);
+
+  const showAlert = (type: "success" | "error", message: string) => {
+    setAlert({ type, message });
+    setTimeout(() => setAlert(null), 2500);
+  };
+
   const createCourse = async () => {
+    setLoading(true);
     try {
       const response = await axios.post(
         `https://api-spring-l3i0.onrender.com/courses`,
@@ -25,14 +40,15 @@ const CoursesAdmin = () => {
           price: parseFloat(coursePrice),
         }
       );
-      console.log("Cours créé :", response.data);
-      alert("Cours créé !");
+      showAlert("success", "Cours créé !");
     } catch (error) {
-      console.error("Erreur lors de la création du cours :", error);
+      showAlert("error", "Erreur lors de la création du cours.");
     }
+    setLoading(false);
   };
 
   const updateCourse = async () => {
+    setLoading(true);
     try {
       const response = await axios.put(
         `https://api-spring-l3i0.onrender.com/courses/${courseId}`,
@@ -41,244 +57,254 @@ const CoursesAdmin = () => {
           price: parseFloat(coursePrice),
         }
       );
-      console.log("Cours modifié :", response.data);
-      alert("Cours modifié !");
+      showAlert("success", "Cours modifié !");
     } catch (error) {
-      console.error("Erreur lors de la modification du cours :", error);
+      showAlert("error", "Erreur lors de la modification du cours.");
     }
+    setLoading(false);
   };
 
   const deleteCourse = async () => {
     if (!courseId) {
-      alert("Veuillez fournir un ID de cours valide.");
+      showAlert("error", "Veuillez fournir un ID de cours valide.");
       return;
     }
+    setLoading(true);
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `https://api-spring-l3i0.onrender.com/courses/${courseId}`
       );
-      console.log("Cours supprimé :", response.data);
-      alert("Cours supprimé !");
+      showAlert("success", "Cours supprimé !");
     } catch (error) {
-      console.error("Erreur lors de la suppression du cours :", error);
+      showAlert("error", "Erreur lors de la suppression du cours.");
     }
+    setLoading(false);
   };
 
   const createLesson = async () => {
+    setLoading(true);
     try {
       const payload = {
         name: lessonName,
         content: lessonContent,
       };
-      console.log("Données envoyées à l'API :", payload);
-
       const courseId = lessonCourseId;
-      const response = await axios.post(
+      await axios.post(
         `https://api-spring-l3i0.onrender.com/courses/${courseId}/lessons`,
         payload
       );
-
-      console.log("Leçon créée :", response.data);
-      alert("Leçon créée et associée au cours !");
+      showAlert("success", "Leçon créée et associée au cours !");
     } catch (error) {
-      console.error("Erreur lors de la création de la leçon :", error);
-      if (axios.isAxiosError(error)) {
-        alert(`Erreur API : ${error.response?.data || "Erreur inconnue"}`);
-      } else {
-        alert("Une erreur inconnue est survenue.");
-      }
+      showAlert("error", "Erreur lors de la création de la leçon.");
     }
+    setLoading(false);
   };
 
   const updateLesson = async () => {
+    setLoading(true);
     try {
       const payload = {
         name: lessonName,
         content: lessonContent,
       };
-
       const courseId = lessonCourseId;
-      const response = await axios.put(
+      await axios.put(
         `https://api-spring-l3i0.onrender.com/courses/${courseId}/lessons/${lessonId}`,
         payload
       );
-
-      console.log("Leçon modifiée :", response.data);
-      alert("Leçon modifiée avec succès !");
+      showAlert("success", "Leçon modifiée avec succès !");
     } catch (error) {
-      console.error("Erreur lors de la modification de la leçon :", error);
-      if (axios.isAxiosError(error)) {
-        alert(`Erreur API : ${error.response?.data || "Erreur inconnue"}`);
-      } else {
-        alert("Une erreur inconnue est survenue.");
-      }
+      showAlert("error", "Erreur lors de la modification de la leçon.");
     }
+    setLoading(false);
   };
 
   const deleteLesson = async () => {
+    setLoading(true);
     try {
       const courseId = lessonCourseId;
-      const response = await axios.delete(
+      await axios.delete(
         `https://api-spring-l3i0.onrender.com/courses/${courseId}/lessons/${lessonId}`
       );
-      console.log("Leçon supprimée :", response.data);
-      alert("Leçon supprimée avec succès !");
+      showAlert("success", "Leçon supprimée avec succès !");
     } catch (error) {
-      console.error("Erreur lors de la suppression de la leçon :", error);
-      if (axios.isAxiosError(error)) {
-        alert(`Erreur API : ${error.response?.data || "Erreur inconnue"}`);
-      } else {
-        alert("Une erreur inconnue est survenue.");
-      }
+      showAlert("error", "Erreur lors de la suppression de la leçon.");
     }
+    setLoading(false);
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: "#1f2937",
-        minHeight: "100vh",
-        padding: "50px",
-      }}
-    >
-      <div className="flex justify-end">
+    <div className="min-h-screen py-10 px-4 font-poppins bg-gradient-to-br from-[#23272f] via-[#23272f] to-[#c3cc50]/10">
+      {/* Alert personnalisée */}
+      {alert && (
+        <div
+          className={`fixed top-6 left-1/2 z-50 -translate-x-1/2 px-6 py-3 rounded-lg shadow-lg text-center text-lg font-semibold transition-all duration-500 animate-fade-in-up
+            ${
+              alert.type === "success"
+                ? "bg-[#c3cc50] text-gray-900"
+                : "bg-[#ea3535] text-white"
+            }`}
+        >
+          {alert.message}
+        </div>
+      )}
+
+      <div className="flex justify-end mb-4">
         <Link href="/">
-          <button style={buttonStyleDELETE}>Retour à l'accueil</button>
+          <button className="bg-[#ea3535] hover:bg-red-700 text-white px-4 py-2 rounded shadow transition-all duration-200">
+            Retour à l'accueil
+          </button>
         </Link>
       </div>
 
-      <h1
-        style={{
-          color: "#c3cc50",
-          marginBottom: "20px",
-          fontWeight: "700",
-          fontSize: "25px",
-        }}
-      >
+      <h1 className="text-[#c3cc50] mb-8 font-extrabold text-3xl animate-fade-in-down">
         KnowlyAdmin - Cours & Leçons
       </h1>
 
       {/* Section Cours */}
-      <div style={{ marginBottom: "40px" }}>
-        <h2 style={{ color: "#c3cc50" }}>Cours</h2>
-        <input
-          type="text"
-          value={courseId}
-          onChange={(e) => setCourseId(e.target.value)}
-          placeholder="ID du cours"
-          style={inputStyle}
-        />
-        <input
-          type="text"
-          value={courseName}
-          onChange={(e) => setCourseName(e.target.value)}
-          placeholder="Nom du cours"
-          style={inputStyle}
-        />
-        <input
-          type="text"
-          value={coursePrice}
-          onChange={(e) => setCoursePrice(e.target.value)}
-          placeholder="Prix du cours"
-          style={inputStyle}
-        />
-        <button onClick={createCourse} style={buttonStyleCREATE}>
-          Créer le cours
-        </button>
-        <button onClick={updateCourse} style={buttonStyleUPDATE}>
-          Modifier le cours
-        </button>
-        <button onClick={deleteCourse} style={buttonStyleDELETE}>
-          Supprimer le cours
-        </button>
+      <div className="mb-10 bg-gray-800 rounded-xl p-6 shadow-lg animate-fade-in-up">
+        <h2 className="text-[#c3cc50] text-xl font-bold mb-4">Cours</h2>
+        <div className="flex flex-wrap gap-4 mb-4">
+          <input
+            type="text"
+            value={courseId}
+            onChange={(e) => setCourseId(e.target.value)}
+            placeholder="ID du cours"
+            className={inputClass}
+          />
+          <input
+            type="text"
+            value={courseName}
+            onChange={(e) => setCourseName(e.target.value)}
+            placeholder="Nom du cours"
+            className={inputClass}
+          />
+          <input
+            type="text"
+            value={coursePrice}
+            onChange={(e) => setCoursePrice(e.target.value)}
+            placeholder="Prix du cours"
+            className={inputClass}
+          />
+        </div>
+        <div className="flex flex-wrap gap-4">
+          <button
+            onClick={createCourse}
+            className={buttonClassCreate}
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="animate-pulse">Création...</span>
+            ) : (
+              "Créer le cours"
+            )}
+          </button>
+          <button
+            onClick={updateCourse}
+            className={buttonClassUpdate}
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="animate-pulse">Modification...</span>
+            ) : (
+              "Modifier le cours"
+            )}
+          </button>
+          <button
+            onClick={deleteCourse}
+            className={buttonClassDelete}
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="animate-pulse">Suppression...</span>
+            ) : (
+              "Supprimer le cours"
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Section Leçons */}
-      <div>
-        <h2 style={{ color: "#c3cc50" }}>Leçons</h2>
-        <input
-          type="text"
-          value={lessonId}
-          onChange={(e) => setLessonId(e.target.value)}
-          placeholder="ID de la leçon"
-          style={inputStyle}
-        />
-        <input
-          type="text"
-          value={lessonName}
-          onChange={(e) => setLessonName(e.target.value)}
-          placeholder="Nom de la leçon"
-          style={inputStyle}
-        />
-        <input
-          type="text"
-          value={lessonContent}
-          onChange={(e) => setLessonContent(e.target.value)}
-          placeholder="Contenu de la leçon"
-          style={inputStyle}
-        />
-        <input
-          type="text"
-          value={lessonCourseId}
-          onChange={(e) => setLessonCourseId(e.target.value)}
-          placeholder="ID du cours associé"
-          style={inputStyle}
-        />
-        <button onClick={createLesson} style={buttonStyleCREATE}>
-          Créer la leçon
-        </button>
-        <button onClick={updateLesson} style={buttonStyleUPDATE}>
-          Modifier la leçon
-        </button>
-        <button onClick={deleteLesson} style={buttonStyleDELETE}>
-          Supprimer la leçon
-        </button>
+      <div className="bg-gray-800 rounded-xl p-6 shadow-lg animate-fade-in-up">
+        <h2 className="text-[#c3cc50] text-xl font-bold mb-4">Leçons</h2>
+        <div className="flex flex-wrap gap-4 mb-4">
+          <input
+            type="text"
+            value={lessonId}
+            onChange={(e) => setLessonId(e.target.value)}
+            placeholder="ID de la leçon"
+            className={inputClass}
+          />
+          <input
+            type="text"
+            value={lessonName}
+            onChange={(e) => setLessonName(e.target.value)}
+            placeholder="Nom de la leçon"
+            className={inputClass}
+          />
+          <input
+            type="text"
+            value={lessonContent}
+            onChange={(e) => setLessonContent(e.target.value)}
+            placeholder="Contenu de la leçon"
+            className={inputClass}
+          />
+          <input
+            type="text"
+            value={lessonCourseId}
+            onChange={(e) => setLessonCourseId(e.target.value)}
+            placeholder="ID du cours associé"
+            className={inputClass}
+          />
+        </div>
+        <div className="flex flex-wrap gap-4">
+          <button
+            onClick={createLesson}
+            className={buttonClassCreate}
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="animate-pulse">Création...</span>
+            ) : (
+              "Créer la leçon"
+            )}
+          </button>
+          <button
+            onClick={updateLesson}
+            className={buttonClassUpdate}
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="animate-pulse">Modification...</span>
+            ) : (
+              "Modifier la leçon"
+            )}
+          </button>
+          <button
+            onClick={deleteLesson}
+            className={buttonClassDelete}
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="animate-pulse">Suppression...</span>
+            ) : (
+              "Supprimer la leçon"
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
-const inputStyle = {
-  padding: "10px",
-  borderRadius: "5px",
-  border: "1px solid #c3cc50",
-  marginRight: "10px",
-  color: "#1f2937",
-  backgroundColor: "#FFF",
-  marginBottom: "10px",
-};
+const inputClass =
+  "p-3 rounded-lg border border-[#c3cc50] bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#c3cc50] transition-all duration-200 shadow-sm";
 
-const buttonStyleCREATE = {
-  padding: "10px 20px",
-  borderRadius: "5px",
-  border: "none",
-  backgroundColor: "#13c863",
-  color: "#FFF",
-  cursor: "pointer",
-  marginRight: "10px",
-  marginBottom: "10px",
-};
-
-const buttonStyleUPDATE = {
-  padding: "10px 20px",
-  borderRadius: "5px",
-  border: "none",
-  backgroundColor: "#eeae37",
-  color: "#FFF",
-  cursor: "pointer",
-  marginRight: "10px",
-  marginBottom: "10px",
-};
-
-const buttonStyleDELETE = {
-  padding: "10px 20px",
-  borderRadius: "5px",
-  border: "none",
-  backgroundColor: "#ea3535",
-  color: "#FFF",
-  cursor: "pointer",
-  marginRight: "10px",
-  marginBottom: "10px",
-};
+const buttonClassCreate =
+  "bg-[#13c863] hover:bg-green-600 text-white font-bold px-6 py-2 rounded-lg shadow transition-all duration-200 focus:ring-2 focus:ring-[#13c863] focus:ring-offset-2";
+const buttonClassUpdate =
+  "bg-[#eeae37] hover:bg-yellow-600 text-white font-bold px-6 py-2 rounded-lg shadow transition-all duration-200 focus:ring-2 focus:ring-[#eeae37] focus:ring-offset-2";
+const buttonClassDelete =
+  "bg-[#ea3535] hover:bg-red-700 text-white font-bold px-6 py-2 rounded-lg shadow transition-all duration-200 focus:ring-2 focus:ring-[#ea3535] focus:ring-offset-2";
 
 export default CoursesAdmin;
