@@ -5,7 +5,6 @@ import HeaderComponent from "@/components/layout/HeaderComponent";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-// Définir une interface pour un cours et une leçon
 interface Course {
   id: number;
   name: string;
@@ -16,7 +15,7 @@ interface Lesson {
   id: number;
   name: string;
   content: string;
-  courseId: number; // Associer la leçon à un cours
+  courseId: number;
 }
 
 const CoursesPage = () => {
@@ -41,7 +40,6 @@ const CoursesPage = () => {
     fetchCourses();
   }, []);
 
-  // Récupérer les leçons pour chaque cours
   useEffect(() => {
     const fetchLessonsForCourses = async () => {
       try {
@@ -51,13 +49,13 @@ const CoursesPage = () => {
             const response = await axios.get(
               `https://api-spring-l3i0.onrender.com/courses/${course.id}/lessons`
             );
-            lessonsMap[course.id] = response.data || []; // Assurez-vous d'avoir une liste vide par défaut
+            lessonsMap[course.id] = response.data || [];
           } catch (error) {
             console.error(
               `Erreur lors du chargement des leçons pour le cours ${course.id}:`,
               error
             );
-            lessonsMap[course.id] = []; // Définit une liste vide en cas d'erreur
+            lessonsMap[course.id] = [];
           }
         }
         setLessonsByCourse(lessonsMap);

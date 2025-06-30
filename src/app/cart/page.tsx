@@ -13,14 +13,19 @@ export default function CartPage() {
   const handleCheckout = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/stripe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cart }),
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
+      // Calcul du montant total en centimes
+      const amount = Math.round(total * 100);
+
+      // Appel direct à l'API backend Spring Boot
+      const res = await fetch(
+        "https://api-spring-l3i0.onrender.com/stripe/checkout?amount=" + amount,
+        {
+          method: "POST",
+        }
+      );
+      const url = await res.text();
+      if (url.startsWith("http")) {
+        window.location.href = url;
       } else {
         alert("Erreur lors de la redirection vers Stripe.");
       }
