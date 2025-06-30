@@ -22,7 +22,7 @@ const CourseCard = ({ id, name, price, imageUrl }: CourseCardProps) => (
           />
         </div>
         <div className="p-4">
-          <h3 className="text-xl font-bold mb-2">{name}</h3>
+          <h3 className="text-[#c3cc50] text-xl font-bold mb-2">{name}</h3>
           <p className="text-[#FFF] font-bold">Prix : {price}€</p>
           <p className="text-[#FFF] font-bold text-sm">ID : {id}</p>
         </div>

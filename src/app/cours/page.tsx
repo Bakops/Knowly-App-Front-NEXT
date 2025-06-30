@@ -43,7 +43,7 @@ const CoursesPage = () => {
             Chargement...
           </div>
         ) : (
-          <div className="flex flex-wrap gap-8 justify-center w-full max-w-5xl animate-fade-in-up">
+          <div className="flex flex-wrap gap-[1rem] justify-center w-full max-w-5xl animate-fade-in-up">
             {courses.map((course, idx) => (
               <div
                 key={course.id}

@@ -57,7 +57,7 @@ export default function CourseDetailPage() {
       <>
         <HeaderComponent />
         <div className="flex-1 flex items-center justify-center py-20">
-          <div className="text-center text-xl">Chargement...</div>
+          <div className="text-center text-xl text-gray-500">Chargement...</div>
         </div>
       </>
     );
